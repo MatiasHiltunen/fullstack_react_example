@@ -1,9 +1,25 @@
+import { effect, signal } from '@preact/signals'
+import { pageLinks, externalLinks } from './links'
+
+// TODO: Signals were found not to be working properly, we'll come back to this!
+// Docs: https://preactjs.com/guide/v10/signals
+
+const currentLangue = signal('fi')
+
+
 
 function FooterNav({ allLinks }) {
-
   const [title, ...links] = allLinks
 
-  const linkComponents = links.map((link) => <a className="link link-hover">{link}</a>)
+  const linkComponents = links.map((link, i) => {
+    return <a
+      key={`${i}_link`}
+      href={link.url}
+      className="link link-hover"
+    >{link.name[currentLangue.value]}</a>
+  })
+
+  // `template string ${title}`, python vastine: f""" sndkfjnskdjnf $jokudata """
 
   return <nav>
     <h6 className="footer-title">{title}</h6>
@@ -12,27 +28,35 @@ function FooterNav({ allLinks }) {
 }
 
 function Footer() {
-
-  const allLinks = [
-    "Palvelut",
-    "Branding",
-    "Design",
-    "Marketing",
-    "Advertisement",
-  ]
-
   return <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10">
-    <FooterNav allLinks={allLinks}></FooterNav>
-    <FooterNav allLinks={allLinks}></FooterNav>
-    <FooterNav allLinks={allLinks}></FooterNav>
+    <FooterNav allLinks={pageLinks}></FooterNav>
+    <FooterNav allLinks={externalLinks}></FooterNav>
   </footer>
 }
 
-export default function App() {
 
+export default function App() {
+  const toggleLangue = () => {
+
+    console.log(currentLangue)
+
+
+    if (currentLangue.value === 'fi') {
+      currentLangue.value = 'en'
+    } else {
+      currentLangue.value = 'fi'
+    }
+
+
+
+  }
+
+  effect(()=> {
+  
+    console.log("Current", currentLangue.value)
+  })
 
   return <>
-
     <header>
       <div className="navbar bg-base-100 shadow-sm">
         <div className="flex-none">
@@ -44,6 +68,9 @@ export default function App() {
           <a className="btn btn-ghost text-xl">daisyUI</a>
         </div>
         <div className="flex-none">
+
+          <button className='btn btn-square' onClick={() => toggleLangue()} > {currentLangue.toJSON()} </button>
+
           <button className="btn btn-square btn-ghost">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block h-5 w-5 stroke-current"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path> </svg>
           </button>
