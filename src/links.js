@@ -14,7 +14,6 @@ export const pageLinks = [
     createLink("Brändäys", "Branding", "#brand"),
     createLink("Design", "Design", "#design"),
     createLink("Markkinointi", "Marketing", "#marketing"),
-    createLink("Mainostaminen", "Advertisement", "#adv"),
 ]
 
 export const externalLinks = [
